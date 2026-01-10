@@ -2,6 +2,7 @@ import type { TarotInterpretationResponse } from './types';
 
 const CACHE_PREFIX = 'upstage_interpretation_';
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+export const PROMPT_VERSION = 'v3-timeRole-orientation'; // 프롬프트 버전 (변경 시 캐시 무효화)
 
 interface CacheEntry {
   value: TarotInterpretationResponse;
@@ -53,7 +54,9 @@ export function createCacheKey(
   questionId: string,
   cardId: string,
   orientation: string,
-  positionIndex: number
+  positionIndex: number,
+  timeRole: string,
+  promptVersion: string = PROMPT_VERSION
 ): string {
-  return `${questionId}_${cardId}_${orientation}_${positionIndex}`;
+  return `${questionId}_${cardId}_${orientation}_${positionIndex}_${timeRole}_${promptVersion}`;
 }

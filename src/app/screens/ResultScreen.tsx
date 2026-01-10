@@ -34,9 +34,9 @@ interface ResultScreenProps {
 }
 
 interface InterpretationData {
-  core_message: string;
-  helpful_hint: string;
-  positive_actions: [string, string, string];
+  perspective_shift: string;
+  observable_experiment: string;
+  open_question: string;
 }
 
 export function ResultScreen({
@@ -63,13 +63,9 @@ export function ResultScreen({
   const questionType = mapQuestionIdToType(questionId);
 
   const fallbackInterpretation: InterpretationData = {
-    core_message: "이 카드 해석은 준비 중이에요.",
-    helpful_hint: "조금만 기다리면 더 다양한 해석을 보여줄게요.",
-    positive_actions: [
-      "한 번 더 생각해보기",
-      "친구에게 부드럽게 말하기",
-      "어른에게 상담하기",
-    ],
+    perspective_shift: "이 상황을 다른 관점에서 볼 수도 있습니다.",
+    observable_experiment: "다음 상황에서 무엇이 보일지 관찰해보세요.",
+    open_question: "지금 이 순간 당신의 진짜 생각은 무엇일까요?",
   };
 
   // Upstage API 또는 fallback으로 해석 가져오기
@@ -94,20 +90,29 @@ export function ResultScreen({
 
         const orientation = drawnCard.orientation || "upright";
         const position = spreadType?.positions[index];
+        const timeRole: "PAST" | "PRESENT" | "FUTURE" =
+          index === 0 ? "PAST" : index === 1 ? "PRESENT" : "FUTURE";
         const cacheKey = createCacheKey(
           questionId,
           drawnCard.cardId,
           orientation,
-          index
+          index,
+          timeRole
         );
 
         // 캐시 확인
         const cached = getCachedInterpretation(cacheKey);
         if (cached) {
+          console.log("[Upstage] Cache hit", {
+            cardIndex: index,
+            timeRole,
+            orientation,
+            cacheKey,
+          });
           newInterpretations[index] = {
-            core_message: cached.core_message,
-            helpful_hint: cached.helpful_hint,
-            positive_actions: cached.positive_actions,
+            perspective_shift: cached.perspective_shift,
+            observable_experiment: cached.observable_experiment,
+            open_question: cached.open_question,
           };
           newLoadingStates[index] = false;
           continue;
@@ -125,15 +130,18 @@ export function ResultScreen({
                 questionId,
                 questionTitle: question?.title || "",
                 positionLabel: position?.label || "",
+                cardKeywords: card.keywords,
+                cardIndex: index,
+                timeRole,
               },
               questionType
             );
 
             if (upstageResult) {
               const interpretation: InterpretationData = {
-                core_message: upstageResult.core_message,
-                helpful_hint: upstageResult.helpful_hint,
-                positive_actions: upstageResult.positive_actions,
+                perspective_shift: upstageResult.perspective_shift,
+                observable_experiment: upstageResult.observable_experiment,
+                open_question: upstageResult.open_question,
               };
               newInterpretations[index] = interpretation;
               setCachedInterpretation(cacheKey, upstageResult);
@@ -148,31 +156,8 @@ export function ResultScreen({
           }
         }
 
-        // Fallback to local interpretation
-        try {
-          const localInterpretation = getTarotInterpretation(
-            drawnCard.cardId,
-            orientation,
-            questionType
-          );
-          if (localInterpretation) {
-            newInterpretations[index] = {
-              core_message: localInterpretation.core_message,
-              helpful_hint:
-                localInterpretation.prediction ||
-                fallbackInterpretation.helpful_hint,
-              positive_actions: localInterpretation.positive_actions,
-            };
-          } else {
-            newInterpretations[index] = fallbackInterpretation;
-          }
-        } catch (error) {
-          console.warn(
-            "[Non-blocking] Failed to get interpretation, using fallback",
-            { error, cardId: drawnCard.cardId }
-          );
-          newInterpretations[index] = fallbackInterpretation;
-        }
+        // Fallback to local interpretation (정적 데이터는 새로운 형식과 호환되지 않으므로 fallback 사용)
+        newInterpretations[index] = fallbackInterpretation;
 
         newLoadingStates[index] = false;
       }
@@ -345,63 +330,43 @@ export function ResultScreen({
                       </div>
                     ) : (
                       <>
-                        {/* Core Message */}
+                        {/* Perspective Shift */}
                         <div className="mt-0">
-                          <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-[#F5F4FA] flex items-center gap-2">
-                            <span>✦</span>
-                            <span>핵심 메시지</span>
-                          </h3>
                           <p
                             className="text-black text-2xl leading-relaxed"
                             style={{
-                              lineHeight: "1.6",
+                              lineHeight: "1.8",
                               fontFamily: "'Jua', sans-serif",
                             }}
                           >
-                            {interpretationData.core_message}
+                            {interpretationData.perspective_shift}
                           </p>
                         </div>
 
-                        {/* Helpful Hint */}
+                        {/* Observable Experiment */}
                         <div className="mt-7 md:mt-9">
-                          <h4 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-[#F5F4FA]">
-                            지금 도움이 되는 힌트
-                          </h4>
                           <p
                             className="text-black text-2xl leading-relaxed"
                             style={{
-                              lineHeight: "1.6",
+                              lineHeight: "1.8",
                               fontFamily: "'Jua', sans-serif",
                             }}
                           >
-                            {interpretationData.helpful_hint}
+                            {interpretationData.observable_experiment}
                           </p>
                         </div>
 
-                        {/* Positive Actions */}
+                        {/* Open Question */}
                         <div className="mt-7 md:mt-9">
-                          <h4 className="text-lg md:text-xl font-bold mb-3 md:mb-4 text-[#F5F4FA]">
-                            오늘 할 수 있는 작은 행동 3가지
-                          </h4>
-                          <ul className="space-y-2">
-                            {interpretationData.positive_actions.map(
-                              (action, i) => (
-                                <li
-                                  key={i}
-                                  className="text-black flex gap-2 text-2xl"
-                                  style={{
-                                    lineHeight: "1.6",
-                                    fontFamily: "'Jua', sans-serif",
-                                  }}
-                                >
-                                  <span className="text-tarot-purple mt-1">
-                                    •
-                                  </span>
-                                  <span>{action}</span>
-                                </li>
-                              )
-                            )}
-                          </ul>
+                          <p
+                            className="text-black text-2xl leading-relaxed italic"
+                            style={{
+                              lineHeight: "1.8",
+                              fontFamily: "'Jua', sans-serif",
+                            }}
+                          >
+                            {interpretationData.open_question}
+                          </p>
                         </div>
                       </>
                     )}

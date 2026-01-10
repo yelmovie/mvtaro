@@ -31,7 +31,7 @@ export function HomeScreen({
         style={{ backgroundImage: `url(${backgroundImage})` }}
       />
 
-      <div className="relative max-w-3xl mx-auto px-6 py-12">
+      <div className="relative w-full max-w-xl md:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto px-6 py-12">
         {/* Central focus overlay */}
         <div 
           className="absolute inset-0 rounded-2xl pointer-events-none"
