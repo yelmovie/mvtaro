@@ -1,0 +1,11 @@
+feat: Figma Make design integration and full feature connection
+
+- Migrate to Vite+React+TypeScript (remove Next.js)
+- Supabase auth/DB with env-based config and fallback
+- PayPal premium payment modal
+- GPT-4o-mini AI tarot interpretation (Edge Function + direct fallback)
+- Google AdSense integration (silent when unconfigured)
+- Dev-only ENV setup UI (hidden in production build)
+- Fix signup button center alignment
+- Add favicon, improve index.html meta tags
+- Add .env.example, update .gitignore
