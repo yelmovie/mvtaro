@@ -1,7 +1,7 @@
 
-  # Friendship Tarot App Development
+  # Friendship Tarot App Design
 
-  This is a code bundle for Friendship Tarot App Development. The original project is available at https://www.figma.com/design/pRm7ikr1hPApA4G9JCRZgR/Friendship-Tarot-App-Development.
+  This is a code bundle for Friendship Tarot App Design. The original project is available at https://www.figma.com/design/VxTR55ObpMTF43cOVAnqKf/Friendship-Tarot-App-Design.
 
   ## Running the code
 
