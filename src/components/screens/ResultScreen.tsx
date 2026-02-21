@@ -615,8 +615,8 @@ export function ResultScreen({ questionTitle, cardIds, onBack, onNavigateToGuide
                             {card.interpretation.detailed}
                           </div>
 
-                          {/* Advice Section - Premium/Member Exclusive */}
-                          {isPremium || isLoggedIn ? (
+                          {/* Advice Section - Premium Only */}
+                          {isPremium ? (
                             <div style={{
                               padding: '1.75rem',
                               background: 'rgba(245, 158, 11, 0.15)',
@@ -667,8 +667,70 @@ export function ResultScreen({ questionTitle, cardIds, onBack, onNavigateToGuide
                                 ))}
                               </div>
                             </div>
+                          ) : isLoggedIn ? (
+                            /* 로그인은 했지만 프리미엄 미구독 → 업그레이드 유도 */
+                            <div
+                              onClick={() => onOpenPremium?.()}
+                              className="glass-card"
+                              style={{
+                                padding: '2rem',
+                                border: '2px dashed rgba(245, 158, 11, 0.5)',
+                                borderRadius: '1rem',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s ease',
+                                position: 'relative',
+                                overflow: 'hidden'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'rgba(245, 158, 11, 0.1)';
+                                e.currentTarget.style.borderColor = 'rgba(245, 158, 11, 0.8)';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = '';
+                                e.currentTarget.style.borderColor = 'rgba(245, 158, 11, 0.5)';
+                              }}
+                            >
+                              <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: '1rem',
+                                textAlign: 'center'
+                              }}>
+                                <Lock size={48} style={{ color: 'var(--primary-gold)', opacity: 0.8 }} />
+                                <div>
+                                  <h4 style={{
+                                    fontSize: '1.25rem',
+                                    fontWeight: 700,
+                                    color: 'var(--primary-gold)',
+                                    marginBottom: '0.5rem'
+                                  }}>
+                                    구체적 행동 가이드
+                                  </h4>
+                                  <p style={{
+                                    fontSize: '0.9375rem',
+                                    color: 'rgba(255, 255, 255, 0.8)',
+                                    lineHeight: 1.6
+                                  }}>
+                                    프리미엄 멤버십으로 업그레이드하면<br />실천 가능한 맞춤형 조언을 바로 확인할 수 있어요
+                                  </p>
+                                </div>
+                                <div style={{
+                                  marginTop: '0.5rem',
+                                  padding: '0.75rem 1.5rem',
+                                  background: 'var(--primary-gold)',
+                                  color: '#1E1B4B',
+                                  borderRadius: '0.75rem',
+                                  fontWeight: 700,
+                                  fontSize: '1rem'
+                                }}>
+                                  ✦ 프리미엄으로 업그레이드
+                                </div>
+                              </div>
+                            </div>
                           ) : (
-                            <div 
+                            /* 비로그인 → 회원가입 유도 */
+                            <div
                               onClick={() => setShowMembershipModal(true)}
                               className="glass-card"
                               style={{
@@ -704,14 +766,14 @@ export function ResultScreen({ questionTitle, cardIds, onBack, onNavigateToGuide
                                     color: 'var(--primary-gold)',
                                     marginBottom: '0.5rem'
                                   }}>
-                                    더 구체적인 행동 가이드
+                                    구체적 행동 가이드
                                   </h4>
                                   <p style={{
                                     fontSize: '0.9375rem',
                                     color: 'rgba(255, 255, 255, 0.8)',
                                     lineHeight: 1.6
                                   }}>
-                                    회원가입하고 실천 가능한 맞춤형 조언을 받아보세요
+                                    회원가입 후 프리미엄으로 업그레이드하면<br />실천 가능한 맞춤형 조언을 받아볼 수 있어요
                                   </p>
                                 </div>
                                 <div style={{
@@ -723,7 +785,7 @@ export function ResultScreen({ questionTitle, cardIds, onBack, onNavigateToGuide
                                   fontWeight: 700,
                                   fontSize: '1rem'
                                 }}>
-                                  구체적 행동 가이드 보기
+                                  ✦ 무료로 가입하기
                                 </div>
                               </div>
                             </div>
