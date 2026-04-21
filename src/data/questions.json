@@ -1,0 +1,54 @@
+{
+  "questions": [
+    {
+      "id": "friend-distance",
+      "text": "요즘 친구와\n거리가 생긴 것 같아요",
+      "category": "distance"
+    },
+    {
+      "id": "friend-misunderstanding",
+      "text": "친구와 오해가\n생긴 것 같아요",
+      "category": "conflict"
+    },
+    {
+      "id": "friend-new",
+      "text": "새로운 친구와\n친해지고 싶어요",
+      "category": "new"
+    },
+    {
+      "id": "friend-conflict",
+      "text": "친구와 다툰 후\n화해하고 싶어요",
+      "category": "conflict"
+    },
+    {
+      "id": "friend-trust",
+      "text": "친구를 믿어도 될지\n고민이에요",
+      "category": "trust"
+    },
+    {
+      "id": "friend-change",
+      "text": "친구가 변한 것\n같아요",
+      "category": "change"
+    },
+    {
+      "id": "friend-group",
+      "text": "친구 그룹에서의\n나의 위치가 궁금해요",
+      "category": "group"
+    },
+    {
+      "id": "friend-jealousy",
+      "text": "친구가 다른 친구와\n더 친해진 것 같아요",
+      "category": "jealousy"
+    },
+    {
+      "id": "friend-express",
+      "text": "친구에게 마음을\n어떻게 표현해야 할지 모르겠어요",
+      "category": "expression"
+    },
+    {
+      "id": "friend-general",
+      "text": "우리 우정의\n앞날이 궁금해요",
+      "category": "general"
+    }
+  ]
+}
