@@ -27,8 +27,8 @@ export function Result({ questionTitle, mood, cardIds, onBack }: ResultProps) {
   // Determine problem/emotion logic here. (Using generic for demo).
   const emotionKey = mood.label.includes('화남') ? 'angry' : 'sad';
 
-  // Get mapped data
-  const results = cardIds.map(id => getCardResult("conflict", emotionKey, id));
+  // Get mapped data passing the index as position
+  const results = cardIds.map((id, index) => getCardResult("conflict", emotionKey, id, index));
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 1500);
