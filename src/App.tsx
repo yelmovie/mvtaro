@@ -11,27 +11,15 @@ import { SettingsScreen } from './components/screens/SettingsScreen';
 import { HelpScreen } from './components/screens/HelpScreen';
 import { PrivacyScreen } from './components/screens/PrivacyScreen';
 import { DrawnCard } from './types/app-types';
-import { META_DESCRIPTION, ViewMode } from './constants/branding';
-import { getTranslations } from './lib/translations';
+import { BRAND_NAME, META_DESCRIPTION, ViewMode } from './constants/branding';
 
 type Screen = 'home' | 'drawing' | 'result' | 'guide' | 'settings' | 'help' | 'privacy';
 
-/** 설정 언어와 브라우저 탭·OG 제목을 맞춥니다. */
+/** 브라우저 탭 제목만 통일합니다. OG/Twitter 제목은 index.html 정적 메타를 유지합니다. */
 function DocumentHeadSync() {
-  const { language } = useLanguage();
-
   useEffect(() => {
-    const t = getTranslations(language);
-    document.title = t.appTitle;
-
-    let ogTitleTag = document.querySelector('meta[property="og:title"]');
-    if (!ogTitleTag) {
-      ogTitleTag = document.createElement('meta');
-      ogTitleTag.setAttribute('property', 'og:title');
-      document.head.appendChild(ogTitleTag);
-    }
-    ogTitleTag.setAttribute('content', t.appTitle);
-  }, [language]);
+    document.title = BRAND_NAME;
+  }, []);
 
   return null;
 }

@@ -5,7 +5,7 @@ export const HOME_DESCRIPTION =
   '내 마음을 고르고 카드를 뽑으면, 관계를 풀어갈 힌트를 볼 수 있어요.';
 export const HOME_STEP_LABEL = '먼저 고민을 골라보세요';
 export const META_DESCRIPTION =
-  '친구관계로 고민하는 학생이 감정을 고르고 카드를 통해 내 마음과 관계를 차분히 정리해보는 마음코칭 앱입니다.';
+  '친구 관계 고민을 감정 이해와 행동으로 연결해주는 마음 코칭 카드 앱';
 
 export type ViewMode = 'large' | 'default' | 'focus';
 
