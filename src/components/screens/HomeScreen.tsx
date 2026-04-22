@@ -1,216 +1,309 @@
-import { Zap, Moon, MessageCircle, HeartHandshake, BookOpen, Settings, Star, AlertCircle } from 'lucide-react';
+import { Zap, Moon, Sun, MessageCircle, HeartHandshake, BookOpen, Star, AlertCircle } from 'lucide-react';
 import { MysticBackground } from '../MysticBackground';
-import crystalBallImage from 'figma:asset/30e70ba49f3c5069e376c16c52dea7bcd25db6b6.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLanguage } from '../../lib/LanguageContext';
+import { getTranslations } from '../../lib/translations';
+// @ts-ignore
+import angerIcon from '../../assets/anger.png';
+// @ts-ignore
+import sadIcon from '../../assets/sad.png';
+// @ts-ignore
+import nervousIcon from '../../assets/nervous.png';
+// @ts-ignore
+import clockIcon from '../../assets/clock.png';
+import {
+  HOME_DESCRIPTION,
+  HOME_QUESTION,
+  HOME_STEP_LABEL,
+  VIEW_MODE_OPTIONS,
+  ViewMode
+} from '../../constants/branding';
 
 const QUESTIONS = [
   {
-    id: 'conflict',
+    id: 'friend-avoiding',
     icon: Zap,
-    title: '친구와 다퉜어요',
-    description: '서로 오해가 쌓여서 어색해졌어요',
+    title: '친구가 나를 피하는 것 같아요',
+    description: '예전처럼 눈도 잘 안 마주치고 말도 줄었어요',
     color: '#EC4899'
   },
   {
-    id: 'distance',
+    id: 'argument',
     icon: Moon,
-    title: '조금 멀어진 것 같아요',
-    description: '예전처럼 편하게 다가가기가 어려워요',
+    title: '친구랑 말다툼 했어요',
+    description: '말이 세게 나와서 서로 기분이 상했어요',
     color: '#6B46C1'
   },
   {
-    id: 'new-friend',
+    id: 'jealousy',
     icon: Star,
-    title: '새로운 친구와 친해지고 싶어요',
-    description: '어떻게 말을 걸면 좋을지 힌트가 필요해요',
+    title: '친구가 다른 친구랑 더 친하게 지내요',
+    description: '내가 밀려난 느낌이 들어서 속상해요',
     color: '#F59E0B'
   },
   {
-    id: 'understanding',
+    id: 'groupchat-leftout',
     icon: MessageCircle,
-    title: '그 친구의 속마음이 궁금해요',
-    description: '왜 그런 행동을 했는지 이해하고 싶어요',
+    title: '단톡방에서 나만 소외된 느낌이에요',
+    description: '답장이 늦거나 나만 빼고 이야기하는 것 같아요',
     color: '#8B5CF6'
   },
   {
-    id: 'apology',
+    id: 'joke-misfire',
     icon: HeartHandshake,
-    title: '화해하고 싶지만 용기가 안 나요',
-    description: '어떻게 사과해야 할지 방법을 찾고 싶어요',
+    title: '장난이었는데 친구가 화났어요',
+    description: '웃기려고 한 말인데 상처가 된 것 같아요',
+    color: '#10B981'
+  },
+  {
+    id: 'dont-want-apology',
+    icon: HeartHandshake,
+    title: '먼저 사과하기 싫어요',
+    description: '내 잘못 같지도 않아서 더 화가 나요',
+    color: '#22c55e'
+  },
+  {
+    id: 'secret-broken',
+    icon: AlertCircle,
+    title: '친구가 내 비밀을 말했어요',
+    description: '믿었는데 배신당한 느낌이라 속상해요',
+    color: '#f43f5e'
+  },
+  {
+    id: 'left-out-play',
+    icon: Star,
+    title: '같이 놀고 싶은데 끼워주지 않아요',
+    description: '어디에 끼어야 할지 몰라서 위축돼요',
+    color: '#f59e0b'
+  },
+  {
+    id: 'feeling-ignored',
+    icon: MessageCircle,
+    title: '친구가 나를 무시하는 것 같아요',
+    description: '내 말은 잘 안 듣고 딴청 피우는 것 같아요',
     color: '#10B981'
   }
 ];
 
-const MOODS = [
-  { icon: '😡', label: '화남' },
-  { icon: '😥', label: '속상함' },
-  { icon: '😟', label: '불안함' },
-  { icon: '😶', label: '답답함' }
-];
-
-interface HomeScreenProps {
-  onSelectQuestion: (questionId: string, questionTitle: string, moodIcon: string, moodLabel: string) => void;
-  onOpenGuide?: () => void;
-  onOpenSettings?: () => void;
+interface MoodOption {
+  icon: string;
+  label: string;
+  emoji: string;
+  accent: string;
+  glow: string;
+  tint: string;
+  shadow: string;
 }
 
-export function HomeScreen({ onSelectQuestion, onOpenGuide, onOpenSettings }: HomeScreenProps) {
-  const [selectedTopic, setSelectedTopic] = useState<{ id: string, title: string } | null>(null);
+const MOODS = [
+  {
+    icon: angerIcon,
+    label: '화남',
+    emoji: '😡',
+    accent: '#D27A86',
+    glow: 'rgba(210, 122, 134, 0.42)',
+    tint: 'rgba(210, 122, 134, 0.16)',
+    shadow: 'rgba(113, 34, 45, 0.34)'
+  },
+  {
+    icon: sadIcon,
+    label: '속상함',
+    emoji: '😥',
+    accent: '#8FA9E8',
+    glow: 'rgba(143, 169, 232, 0.4)',
+    tint: 'rgba(143, 169, 232, 0.14)',
+    shadow: 'rgba(62, 82, 145, 0.3)'
+  },
+  {
+    icon: nervousIcon,
+    label: '불안함',
+    emoji: '😟',
+    accent: '#9A98D9',
+    glow: 'rgba(154, 152, 217, 0.38)',
+    tint: 'rgba(154, 152, 217, 0.13)',
+    shadow: 'rgba(72, 68, 135, 0.3)'
+  },
+  {
+    icon: clockIcon,
+    label: '답답함',
+    emoji: '😶',
+    accent: '#D8C68B',
+    glow: 'rgba(216, 198, 139, 0.34)',
+    tint: 'rgba(216, 198, 139, 0.14)',
+    shadow: 'rgba(120, 104, 57, 0.28)'
+  }
+] satisfies MoodOption[];
 
-  const handleSelectMood = (moodIcon: string, moodLabel: string) => {
-    if (selectedTopic) {
-      onSelectQuestion(selectedTopic.id, selectedTopic.title, moodIcon, moodLabel);
-    }
+interface HomeScreenProps {
+  onSelectQuestion: (
+    questionId: string,
+    questionTitle: string,
+    moodIcon: string,
+    moodLabel: string,
+    selectedFeelingText: string
+  ) => void;
+  onOpenGuide?: () => void;
+  onOpenSettings?: () => void;
+  viewMode: ViewMode;
+  onChangeViewMode: (mode: ViewMode) => void;
+}
+
+const FEELING_PROMPTS: Record<string, string[]> = {
+  화남: [
+    '나만 바보 된 느낌이야',
+    '왜 나한테만 그러는지 모르겠어',
+    '친구가 일부러 그런 것 같아'
+  ],
+  속상함: [
+    '친구가 나를 피하는 것 같아',
+    '예전처럼 안 친한 느낌이야',
+    '혼자 있는 기분이 들어'
+  ],
+  불안함: [
+    '친구가 나를 싫어하는 건 아닐까?',
+    '내가 잘못한 걸까 계속 생각나',
+    '다른 애들이 나 빼고 친한 것 같아'
+  ],
+  답답함: [
+    '말하고 싶은데 어떻게 말해야 할지 모르겠어',
+    '계속 생각나서 더 답답해',
+    '그냥 참고 있는데 힘들어'
+  ]
+};
+
+export function HomeScreen({ onSelectQuestion, onOpenGuide, viewMode, onChangeViewMode }: HomeScreenProps) {
+  const { language } = useLanguage();
+  const t = getTranslations(language);
+  const [themeMode, setThemeMode] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('theme');
+    return saved === 'light' ? 'light' : 'dark';
+  });
+  const [selectedTopic, setSelectedTopic] = useState<{ id: string, title: string } | null>(null);
+  const [selectedMood, setSelectedMood] = useState<MoodOption | null>(null);
+  const [selectedFeelingText, setSelectedFeelingText] = useState<string | null>(null);
+  const [isProceeding, setIsProceeding] = useState(false);
+  const [selectingMoodLabel, setSelectingMoodLabel] = useState<string | null>(null);
+
+  const handleSelectMood = (mood: MoodOption) => {
+    setSelectingMoodLabel(mood.label);
+    setSelectedMood(mood);
+    setSelectedFeelingText(null);
+    setIsProceeding(false);
+    window.setTimeout(() => {
+      setSelectingMoodLabel((prev) => (prev === mood.label ? null : prev));
+    }, 420);
   };
+
+  const handleProceedToDrawing = () => {
+    if (!selectedTopic || !selectedMood || !selectedFeelingText || isProceeding) return;
+    setIsProceeding(true);
+    window.setTimeout(() => {
+      onSelectQuestion(
+        selectedTopic.id,
+        selectedTopic.title,
+        selectedMood.icon,
+        selectedMood.label,
+        selectedFeelingText
+      );
+    }, 180);
+  };
+
+  const toggleTheme = () => {
+    setThemeMode((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    const syncFromStorage = () => {
+      const saved = localStorage.getItem('theme');
+      setThemeMode(saved === 'light' ? 'light' : 'dark');
+    };
+    window.addEventListener('focus', syncFromStorage);
+    return () => window.removeEventListener('focus', syncFromStorage);
+  }, []);
   
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative home-screen-shell">
       <MysticBackground variant="tarot-space" intensity="high" />
 
-      <div className="relative z-10 py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Top Navigation Bar */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            marginBottom: '3rem',
-            padding: '1rem',
-            background: 'rgba(255, 255, 255, 0.05)',
-            backdropFilter: 'blur(12px)',
-            borderRadius: '1rem',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            alignItems: 'center'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.75rem',
-              justifyContent: 'center'
-            }}>
-              <div style={{
-                fontSize: '1.5rem',
-                filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.6))',
-                flexShrink: 0,
-                opacity: 0.3
-              }}>✦</div>
-              <h1 style={{
-                fontSize: 'clamp(1.25rem, 4vw, 1.75rem)',
-                fontWeight: 'bold',
-                background: 'linear-gradient(90deg, #F59E0B, #FCD34D, #F59E0B)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                margin: 0,
-                lineHeight: 1.3,
-                textAlign: 'center',
-                letterSpacing: '0.05em'
-              }}>
-                마음 토닥 스캐너
-              </h1>
-              <div style={{
-                fontSize: '1.5rem',
-                filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.6))',
-                flexShrink: 0,
-                opacity: 0.3
-              }}>✦</div>
+      <div className="relative z-10">
+        <div className="home-top-bar">
+          <button
+            type="button"
+            className="home-theme-toggle"
+            onClick={toggleTheme}
+            aria-label={themeMode === 'dark' ? '라이트 모드로 바꾸기' : '다크 모드로 바꾸기'}
+            title={themeMode === 'dark' ? '라이트 모드' : '다크 모드'}
+          >
+            {themeMode === 'dark' ? <Sun size={22} strokeWidth={2} /> : <Moon size={22} strokeWidth={2} />}
+          </button>
+        </div>
+
+        <div className="home-screen-inner py-12 px-4">
+        <div className="home-screen-content">
+          <header className="home-header glass-card">
+            <div className="home-brand-block">
+              <span className="home-brand-kicker">친구관계 마음 정리 앱</span>
+              <h1 className="home-brand-title">{t.appTitle}</h1>
+              <p className="home-brand-tagline">{t.appSubtitle}</p>
             </div>
 
-            <div style={{ 
-              display: 'flex', 
-              gap: '0.5rem', 
-              flexWrap: 'wrap',
-              justifyContent: 'center'
-            }}>
-              <button
-                className="glass-card"
-                style={{
-                  padding: '0.625rem',
-                  borderRadius: '0.75rem',
-                  border: '1px solid var(--surface-border)',
-                  background: 'transparent',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.5rem'
-                }}
-                onClick={onOpenGuide}
-              >
-                <BookOpen size={18} color="var(--text-secondary)" />
-                <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>카드 설명서</span>
-              </button>
+            <div className="home-header-actions">
+              <div className="home-view-control-label">보기 설정</div>
+              <div className="view-mode-toggle" role="group" aria-label="보기 설정">
+                {VIEW_MODE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`view-mode-btn ${viewMode === option.value ? 'is-active' : ''}`}
+                    aria-pressed={viewMode === option.value}
+                    title={option.description}
+                    onClick={() => onChangeViewMode(option.value)}
+                  >
+                    <span>{option.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          </header>
 
-          <div style={{
-            textAlign: 'center',
-            marginBottom: '1.5rem',
-            animation: 'fadeIn 0.5s ease-out'
-          }}>
-            <p style={{
-              fontSize: '1.125rem',
-              color: 'var(--text-primary)',
-              marginBottom: '0.5rem'
-            }}>
-              내 마음속 진짜 이야기를 들려줄래? ✨
-            </p>
-            <p style={{
-              fontSize: '0.875rem',
-              color: 'var(--text-secondary)'
-            }}>
-              친구 고민을 고르고 카드를 섞으면, 마음 코칭 가이드가 나타날 거야!
-            </p>
-          </div>
+          <section className="home-hero glass-card animate-fade-in">
+            <span className="home-step-label">{HOME_STEP_LABEL}</span>
+            <h2 className="home-main-question">{HOME_QUESTION}</h2>
+            <p className="home-main-description">{HOME_DESCRIPTION}</p>
+          </section>
 
           {/* Step 1: Select Topic */}
           {!selectedTopic && (
-            <div className="animate-fade-in">
-              <h2 className="text-2xl font-semibold text-center mb-8 text-primary" style={{ marginTop: '2rem' }}>
-                어떤 친구 문제로 고민인가요?
-              </h2>
+            <section className="animate-fade-in home-selection-section">
+              <div className="home-section-intro">
+                <p className="home-section-eyebrow">지금 가장 가까운 고민을 골라보세요</p>
+                <p className="home-section-helper">
+                  가장 먼저 눌러볼 고민을 하나 고르면 다음 단계로 자연스럽게 이어져요.
+                </p>
+              </div>
 
-              <div style={{
-                display: 'grid',
-                gap: '0.75rem',
-                gridTemplateColumns: '1fr',
-                marginBottom: '2rem',
-                opacity: 0.8
-              }}>
+              <div className="home-question-grid">
                 {QUESTIONS.map((question, index) => (
                   <div
                     key={question.id}
-                    className="question-card animate-fade-in"
+                    className="question-card animate-fade-in home-question-card"
                     onClick={() => setSelectedTopic({ id: question.id, title: question.title })}
                     style={{
-                      animationDelay: `${index * 0.1}s`,
-                      transform: 'scale(0.95)',
-                      padding: '1rem 1.5rem'
+                      animationDelay: `${index * 0.06}s`
                     }}
                   >
-                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <div style={{ flexShrink: 0 }}>
+                    <div className="home-question-card__inner">
+                      <div className="home-question-card__icon">
                         <question.icon size={24} color={question.color} />
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <h3 style={{ 
-                          fontSize: '1rem',
-                          fontWeight: 600,
-                          marginBottom: '0.25rem',
-                          color: 'var(--text-primary)',
-                          whiteSpace: 'pre-line',
-                          lineHeight: 1.5
-                        }}>
-                          {question.title}
-                        </h3>
-                        <p style={{ 
-                          fontSize: '0.8125rem',
-                          color: 'var(--text-secondary)',
-                          lineHeight: 1.5,
-                          margin: 0
-                        }}>
-                          {question.description}
-                        </p>
+                      <div className="home-question-card__content">
+                        <h3 className="home-question-card__title">{question.title}</h3>
+                        <p className="home-question-card__description">{question.description}</p>
                       </div>
                     </div>
                   </div>
@@ -218,140 +311,129 @@ export function HomeScreen({ onSelectQuestion, onOpenGuide, onOpenSettings }: Ho
 
                 <button
                   onClick={() => setSelectedTopic({ id: 'mystery', title: '말하기 힘든 다른 고민' })}
-                  style={{
-                    padding: '1rem 1.5rem',
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px dashed rgba(255,255,255,0.3)',
-                    borderRadius: '1rem',
-                    color: 'var(--text-secondary)',
-                    fontSize: '0.9375rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    transform: 'scale(0.95)'
-                  }}
+                  className="home-question-card home-question-card--ghost"
                 >
                   <AlertCircle size={18} />
                   내가 직접 생각할게요
                 </button>
               </div>
-            </div>
+            </section>
           )}
 
           {/* Step 2: Select Mood */}
           {selectedTopic && (
-            <div className="animate-fade-in" style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+            <section className="animate-fade-in home-detail-flow">
+              <div className="home-selected-topic glass-card">
+                <span className="home-selected-topic__label">선택한 고민</span>
+                <strong className="home-selected-topic__title">{selectedTopic.title}</strong>
+              </div>
+
               <button 
-                onClick={() => setSelectedTopic(null)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--text-secondary)',
-                  textDecoration: 'underline',
-                  marginBottom: '2rem',
-                  cursor: 'pointer'
+                onClick={() => {
+                  setSelectedTopic(null);
+                  setSelectedMood(null);
+                  setSelectedFeelingText(null);
+                  setIsProceeding(false);
                 }}
+                className="home-back-link"
               >
                 ← 다른 고민 고르기
               </button>
 
-              <h2 className="text-2xl font-semibold text-center mb-4 text-primary">
-                지금 내 기분은 어떤가요?
-              </h2>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-                솔직한 내 감정을 하나 골라보세요.
-              </p>
+              <div className="home-detail-intro">
+                <h2 className="home-detail-title">지금 기분이 어떤가요?</h2>
+                <p className="home-detail-subtitle">솔직한 내 감정을 하나 고른 뒤, 내 마음 한 줄까지 이어서 선택해보세요.</p>
+              </div>
 
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '1rem',
-                maxWidth: '400px',
-                margin: '0 auto'
-              }}>
+              <div className="emotion-mood-grid">
                 {MOODS.map((mood) => (
                   <button
                     key={mood.label}
-                    onClick={() => handleSelectMood(mood.icon, mood.label)}
-                    className="glass-card"
+                    type="button"
+                    onClick={() => handleSelectMood(mood)}
+                    disabled={isProceeding}
+                    aria-pressed={selectedMood?.label === mood.label}
+                    className={`emotion-mood-card ${selectedMood?.label === mood.label ? 'is-selected' : ''} ${selectingMoodLabel === mood.label ? 'is-selecting' : ''} ${selectedMood && selectedMood.label !== mood.label ? 'is-muted' : ''}`}
                     style={{
-                      padding: '2rem 1rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      borderRadius: '1.5rem',
-                      border: '2px solid rgba(245, 158, 11, 0.2)',
-                      transition: 'all 0.3s ease',
-                      cursor: 'pointer'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)';
-                      e.currentTarget.style.background = 'rgba(245, 158, 11, 0.15)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = '';
-                      e.currentTarget.style.background = '';
+                      ['--mood-accent' as string]: mood.accent,
+                      ['--mood-glow' as string]: mood.glow,
+                      ['--mood-tint' as string]: mood.tint,
+                      ['--mood-shadow' as string]: mood.shadow
                     }}
                   >
-                    <span style={{ fontSize: '3rem', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.2))' }}>{mood.icon}</span>
-                    <span style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--text-primary)' }}>{mood.label}</span>
+                    <span className="emotion-mood-card__sheen" aria-hidden="true" />
+                    <span className="emotion-mood-card__icon-area">
+                      <span className="emotion-mood-card__icon-wrap">
+                        <span className="emotion-mood-card__icon-glow" aria-hidden="true" />
+                        <img
+                          src={mood.icon}
+                          alt={mood.label}
+                          className="emotion-mood-card__icon"
+                        />
+                      </span>
+                    </span>
+                    <span className="emotion-mood-card__label-area">
+                      <span className="emotion-mood-card__label">
+                        {mood.label} {mood.emoji}
+                      </span>
+                    </span>
                   </button>
                 ))}
               </div>
-            </div>
+
+              {selectedMood && (
+                <p className="emotion-selection-guidance">
+                  좋아, 이 마음으로 카드 이야기를 들어보자.
+                </p>
+              )}
+
+              {selectedMood && (
+                <div className="emotion-feeling-panel">
+                  <h3 className="emotion-feeling-title">내 마음 한 줄을 골라봐요</h3>
+                  <p className="emotion-feeling-subtitle">내 이야기랑 가장 가까운 문장을 하나 선택해보세요.</p>
+                  <div className="emotion-feeling-grid">
+                    {(FEELING_PROMPTS[selectedMood.label] ?? []).map((feeling) => (
+                      <button
+                        key={feeling}
+                        type="button"
+                        className={`emotion-feeling-card ${selectedFeelingText === feeling ? 'is-selected' : ''}`}
+                        onClick={() => setSelectedFeelingText(feeling)}
+                      >
+                        {feeling}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="emotion-feeling-confirm"
+                    disabled={!selectedFeelingText || isProceeding}
+                    onClick={handleProceedToDrawing}
+                  >
+                    이 마음으로 카드 뽑기
+                  </button>
+                </div>
+              )}
+            </section>
           )}
 
-          <div style={{
-            background: 'rgba(107, 70, 193, 0.1)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(107, 70, 193, 0.3)',
-            borderRadius: '1rem',
-            padding: '1.5rem',
-            marginTop: '4rem'
-          }}>
-            <h3 style={{
-              fontSize: '1rem',
-              fontWeight: 600,
-              color: 'var(--primary-purple)',
-              marginBottom: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}>
-              마음 코칭 이용 팁
-            </h3>
-            <ul style={{
-              listStyle: 'none',
-              padding: 0,
-              margin: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.75rem'
-            }}>
-              <li style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-                display: 'flex',
-                alignItems: 'start',
-                gap: '0.5rem'
-              }}>
-                <span style={{ color: 'var(--primary-gold)' }}>•</span>
-                <span>혼자 조용한 곳에서 내 솔직한 생각에 집중해보세요</span>
-              </li>
-              <li style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-                display: 'flex',
-                alignItems: 'start',
-                gap: '0.5rem'
-              }}>
-                <span style={{ color: 'var(--primary-gold)' }}>•</span>
-                <span>친구의 얼굴을 떠올리며 마음에 드는 카드를 골라보세요</span>
-              </li>
-            </ul>
-          </div>
+          <footer className="home-footer-tools">
+            <button
+              className="home-guide-button glass-card"
+              onClick={onOpenGuide}
+            >
+              <BookOpen size={18} color="var(--text-secondary)" />
+              <span>카드 설명서 보기</span>
+            </button>
+
+            <div className="home-tip-card">
+              <h3 className="home-tip-title">시작 전에 이렇게 해보세요</h3>
+              <ul className="home-tip-list">
+                <li>혼자 조용한 곳에서 내 솔직한 생각에 집중해보세요.</li>
+                <li>친구의 얼굴을 떠올리며 지금 가장 가까운 고민부터 골라보세요.</li>
+              </ul>
+            </div>
+          </footer>
+        </div>
         </div>
       </div>
     </div>

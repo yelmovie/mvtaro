@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './styles/globals.css';
-import { LanguageProvider } from './lib/LanguageContext';
+import { LanguageProvider, useLanguage } from './lib/LanguageContext';
 
 // Components
 import { HomeScreen } from './components/screens/HomeScreen';
@@ -10,10 +10,31 @@ import { GuideScreen } from './components/screens/GuideScreen';
 import { SettingsScreen } from './components/screens/SettingsScreen';
 import { HelpScreen } from './components/screens/HelpScreen';
 import { PrivacyScreen } from './components/screens/PrivacyScreen';
-import { Monitor, Tablet, Smartphone } from 'lucide-react';
+import { DrawnCard } from './types/app-types';
+import { META_DESCRIPTION, ViewMode } from './constants/branding';
+import { getTranslations } from './lib/translations';
 
 type Screen = 'home' | 'drawing' | 'result' | 'guide' | 'settings' | 'help' | 'privacy';
-type ViewportMode = 'desktop' | 'tablet' | 'mobile';
+
+/** 설정 언어와 브라우저 탭·OG 제목을 맞춥니다. */
+function DocumentHeadSync() {
+  const { language } = useLanguage();
+
+  useEffect(() => {
+    const t = getTranslations(language);
+    document.title = t.appTitle;
+
+    let ogTitleTag = document.querySelector('meta[property="og:title"]');
+    if (!ogTitleTag) {
+      ogTitleTag = document.createElement('meta');
+      ogTitleTag.setAttribute('property', 'og:title');
+      document.head.appendChild(ogTitleTag);
+    }
+    ogTitleTag.setAttribute('content', t.appTitle);
+  }, [language]);
+
+  return null;
+}
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
@@ -25,24 +46,54 @@ function App() {
     icon: string;
     label: string;
   } | null>(null);
-  const [drawnCards, setDrawnCards] = useState<string[]>([]);
-  const [viewportMode, setViewportMode] = useState<ViewportMode>('desktop');
+  const [selectedFeelingText, setSelectedFeelingText] = useState<string | null>(null);
+  const [drawnCards, setDrawnCards] = useState<DrawnCard[]>([]);
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    const savedMode = localStorage.getItem('mind-coaching-view-mode') as ViewMode | null;
+    return savedMode ?? 'default';
+  });
   const [highlightedCardId, setHighlightedCardId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Initialize theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    if (descriptionTag) {
+      descriptionTag.setAttribute('content', META_DESCRIPTION);
+    }
+
+    let ogDescriptionTag = document.querySelector('meta[property="og:description"]');
+    if (!ogDescriptionTag) {
+      ogDescriptionTag = document.createElement('meta');
+      ogDescriptionTag.setAttribute('property', 'og:description');
+      document.head.appendChild(ogDescriptionTag);
+    }
+    ogDescriptionTag.setAttribute('content', META_DESCRIPTION);
   }, []);
 
-  const handleSelectQuestion = (questionId: string, questionTitle: string, moodIcon: string, moodLabel: string) => {
+  useEffect(() => {
+    localStorage.setItem('mind-coaching-view-mode', viewMode);
+  }, [viewMode]);
+
+  const handleSelectQuestion = (
+    questionId: string,
+    questionTitle: string,
+    moodIcon: string,
+    moodLabel: string,
+    feelingText: string
+  ) => {
     setSelectedQuestion({ id: questionId, title: questionTitle });
     setSelectedMood({ icon: moodIcon, label: moodLabel });
+    setSelectedFeelingText(feelingText);
     setCurrentScreen('drawing');
   };
 
-  const handleCardsDrawn = (cardIds: string[]) => {
-    setDrawnCards(cardIds);
+  const handleCardsDrawn = (cards: DrawnCard[]) => {
+    setDrawnCards(cards);
+    if (cards.length === 0) {
+      return;
+    }
     setCurrentScreen('result');
   };
 
@@ -50,110 +101,30 @@ function App() {
     setCurrentScreen('home');
     setSelectedQuestion(null);
     setSelectedMood(null);
+    setSelectedFeelingText(null);
     setDrawnCards([]);
-  };
-
-  // Viewport dimensions
-  const getViewportStyle = () => {
-    switch (viewportMode) {
-      case 'mobile':
-        return { maxWidth: '430px', margin: '0 auto', border: '1px solid rgba(255, 255, 255, 0.1)' };
-      case 'tablet':
-        return { maxWidth: '820px', margin: '0 auto', border: '1px solid rgba(255, 255, 255, 0.1)' };
-      case 'desktop':
-      default:
-        return { maxWidth: '100%' };
-    }
   };
 
   return (
     <LanguageProvider>
-      <div className="app-container">
-      {/* Viewport Mode Selector */}
-      <div className="glass-card" style={{
-        position: 'fixed',
-        top: '1rem',
-        right: '1rem',
-        zIndex: 100,
-        display: 'flex',
-        gap: '0.5rem',
-        borderRadius: '12px',
-        padding: '0.5rem'
-      }}>
-        <button
-          onClick={() => setViewportMode('desktop')}
-          style={{
-            background: viewportMode === 'desktop' ? 'rgba(107, 70, 193, 0.5)' : 'transparent',
-            border: viewportMode === 'desktop' ? '1px solid var(--primary-purple)' : '1px solid transparent',
-            borderRadius: '8px',
-            padding: '0.5rem 0.75rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'all 0.3s ease',
-            color: 'var(--text-primary)'
-          }}
-          title="데스크톱 뷰"
-        >
-          <Monitor size={18} />
-          <span style={{ fontSize: '0.875rem' }}>Desktop</span>
-        </button>
-        
-        <button
-          onClick={() => setViewportMode('tablet')}
-          style={{
-            background: viewportMode === 'tablet' ? 'rgba(107, 70, 193, 0.5)' : 'transparent',
-            border: viewportMode === 'tablet' ? '1px solid var(--primary-purple)' : '1px solid transparent',
-            borderRadius: '8px',
-            padding: '0.5rem 0.75rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'all 0.3s ease',
-            color: 'var(--text-primary)'
-          }}
-          title="태블릿 뷰"
-        >
-          <Tablet size={18} />
-          <span style={{ fontSize: '0.875rem' }}>Tablet</span>
-        </button>
-        
-        <button
-          onClick={() => setViewportMode('mobile')}
-          style={{
-            background: viewportMode === 'mobile' ? 'rgba(107, 70, 193, 0.5)' : 'transparent',
-            border: viewportMode === 'mobile' ? '1px solid var(--primary-purple)' : '1px solid transparent',
-            borderRadius: '8px',
-            padding: '0.5rem 0.75rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            transition: 'all 0.3s ease',
-            color: 'var(--text-primary)'
-          }}
-          title="모바일 뷰"
-        >
-          <Smartphone size={18} />
-          <span style={{ fontSize: '0.875rem' }}>Mobile</span>
-        </button>
-      </div>
-
-      {/* Viewport Container */}
-      <div style={getViewportStyle()}>
+      <DocumentHeadSync />
+      <div className="app-container" data-view-mode={viewMode}>
+      <div className="app-route-layer">
         {/* Screens */}
         {currentScreen === 'home' && (
           <HomeScreen 
             onSelectQuestion={handleSelectQuestion}
             onOpenGuide={() => setCurrentScreen('guide')}
             onOpenSettings={() => setCurrentScreen('settings')}
+            viewMode={viewMode}
+            onChangeViewMode={setViewMode}
           />
         )}
 
         {currentScreen === 'drawing' && selectedQuestion && (
           <CardDrawingScreen
+            problemType={selectedQuestion.id}
+            emotionLabel={selectedMood?.label ?? '속상함'}
             questionTitle={selectedQuestion.title}
             onBack={handleBack}
             onCardsDrawn={handleCardsDrawn}
@@ -162,9 +133,11 @@ function App() {
 
         {currentScreen === 'result' && selectedQuestion && selectedMood && drawnCards.length > 0 && (
           <Result
+            problemType={selectedQuestion.id}
             questionTitle={selectedQuestion.title}
             mood={selectedMood}
-            cardIds={drawnCards}
+            selectedFeelingText={selectedFeelingText ?? ''}
+            cards={drawnCards}
             onBack={handleBack}
           />
         )}

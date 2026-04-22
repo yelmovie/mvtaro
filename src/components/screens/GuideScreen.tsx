@@ -88,10 +88,10 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
               📖
             </div>
             <h1 className="text-2xl font-semibold mb-2 text-primary">
-              타로 가이드
+              마음코칭 카드 가이드
             </h1>
             <p className="text-sm text-secondary">
-              타로 카드의 의미와 해석 방법을 배워보세요
+              카드로 마음을 정리하는 방법과 카드 도감을 살펴보세요
             </p>
           </motion.div>
 
@@ -199,7 +199,7 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                     fontWeight: 'bold',
                     color: 'var(--text-primary)'
                   }}>
-                    타로란 무엇인가요?
+                    마음코칭 카드는 무엇인가요?
                   </h2>
                 </div>
                 <p style={{
@@ -208,8 +208,9 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                   color: 'var(--text-secondary)',
                   marginBottom: '1rem'
                 }}>
-                  타로는 78장의 카드를 사용하여 과거, 현재, 미래에 대한 통찰을 얻는 점술 도구입니다. 
-                  각 카드는 고유한 상징과 의미를 가지고 있으며, 카드의 조합과 위치에 따라 다양한 해석이 가능합니다.
+                  이 앱에서는 78장의 카드를 그림과 상징으로 활용해, 친구 관계에서의 내 마음과 생각할 거리를 차분히
+                  정리하는 데 도움을 줍니다. 운세나 미래를 단정하지 않으며, 스스로 선택하고 실천할 수 있는 작은 힌트를
+                  모아 보여 줍니다.
                 </p>
                 <div style={{
                   padding: '1.25rem',
@@ -223,15 +224,15 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                     fontWeight: 500,
                     marginBottom: '0.5rem'
                   }}>
-                    💡 관계 타로의 특징
+                    💡 이 앱에서 카드가 하는 일
                   </p>
                   <p style={{
                     fontSize: '0.875rem',
                     lineHeight: 1.7,
                     color: 'var(--text-secondary)'
                   }}>
-                    우리 앱은 완전한 78장 타로 덱을 사용하여 대인관계에 특화된 해석을 제공합니다. 
-                    메이저 아르카나 22장과 마이너 아르카나 56장(완드, 컵, 검, 펜타클)이 모두 포함되어 있습니다.
+                    같은 고민이라도 카드 조합에 따라 다른 관점을 떠올리게 할 수 있어요.
+                    메이저·마이너 카드가 모두 포함된 78장을 사용하며, 친구 관계 이야기에 맞춘 코칭 문장과 연결됩니다.
                   </p>
                 </div>
               </div>
@@ -250,7 +251,7 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                     fontWeight: 'bold',
                     color: 'var(--text-primary)'
                   }}>
-                    타로 리딩 방법
+                    마음코칭 카드 사용 순서
                   </h2>
                 </div>
 
@@ -258,26 +259,26 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                   {[
                     {
                       step: 1,
-                      title: '질문 선택',
-                      desc: '현재 고민하고 있는 관계에 대한 질문을 선택하세요',
+                      title: '고민 선택',
+                      desc: '지금 마음이 가장 가까운 친구 관계 고민 하나를 고릅니다',
                       icon: '1️⃣'
                     },
                     {
                       step: 2,
-                      title: '카드 선택',
-                      desc: '직관을 따라 3장의 카드를 선택하세요. 첫 느낌이 중요합니다',
+                      title: '감정 · 마음 한 줄',
+                      desc: '내 감정과 오늘 마음 한 줄을 고르면 카드 뽑기 화면으로 이어져요',
                       icon: '2️⃣'
                     },
                     {
                       step: 3,
-                      title: '해석 확인',
-                      desc: '과거-현재-미래의 흐름을 통해 관계의 방향성을 이해하세요',
+                      title: '카드 뽑기',
+                      desc: '준비가 되면 카드를 뽑아 나·친구·행동 순서로 살펴봅니다',
                       icon: '3️⃣'
                     },
                     {
                       step: 4,
-                      title: '행동하기',
-                      desc: '타로의 조언을 참고하여 관계 개선을 위한 실천을 해보세요',
+                      title: '작은 행동 정하기',
+                      desc: '코칭 문장과 오늘 해볼 한 걸음을 골라 실천해 보면 됩니다',
                       icon: '4️⃣'
                     }
                   ].map((item, index) => (
@@ -333,7 +334,7 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                     fontWeight: 'bold',
                     color: 'var(--text-primary)'
                   }}>
-                    3장 리딩의 의미
+                    카드 세 장이 말하는 순서
                   </h2>
                 </div>
 
@@ -356,14 +357,14 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                       color: 'var(--primary-gold)',
                       marginBottom: '0.5rem'
                     }}>
-                      과거
+                      나의 속마음
                     </h3>
                     <p style={{
                       fontSize: '0.875rem',
                       lineHeight: 1.6,
                       color: 'var(--text-secondary)'
                     }}>
-                      관계가 어떻게 시작됐는지, 과거의 영향은 무엇인지 살펴봅니다
+                      내가 지금 어떤 감정인지, 마음속에서 일어나는 생각을 돌아봅니다
                     </p>
                   </div>
 
@@ -381,14 +382,14 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                       color: 'var(--primary-purple)',
                       marginBottom: '0.5rem'
                     }}>
-                      현재
+                      친구의 입장 상상
                     </h3>
                     <p style={{
                       fontSize: '0.875rem',
                       lineHeight: 1.6,
                       color: 'var(--text-secondary)'
                     }}>
-                      지금 이 순간의 관계 상태와 현재 직면한 상황을 이해합니다
+                      상대 입장에서 한 번 생각해 보면 어떨지, 부드럽게 상상해 봅니다
                     </p>
                   </div>
 
@@ -406,14 +407,14 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                       color: 'var(--primary-pink)',
                       marginBottom: '0.5rem'
                     }}>
-                      가능성
+                      해볼 수 있는 행동
                     </h3>
                     <p style={{
                       fontSize: '0.875rem',
                       lineHeight: 1.6,
                       color: 'var(--text-secondary)'
                     }}>
-                      미래에 나아갈 수 있는 방향과 발전 가능성을 탐색합니다
+                      오늘 당장 시도할 수 있는 작은 말과 행동을 고릅니다
                     </p>
                   </div>
                 </div>
@@ -436,7 +437,7 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                   gap: '0.5rem'
                 }}>
                   <Heart size={20} />
-                  타로를 대하는 마음가짐
+                  카드를 대하는 마음가짐
                 </h3>
                 <ul style={{
                   listStyle: 'none',
@@ -447,10 +448,10 @@ export function GuideScreen({ onBack, highlightedCardId, onClearHighlight }: Gui
                   gap: '0.75rem'
                 }}>
                   {[
-                    '타로는 절대적인 미래가 아닌 가능성을 보여줍니다',
-                    '열린 마음으로 받아들이되, 맹신하지 마세요',
-                    '타로의 조언을 참고하되, 최종 선택은 자신이 합니다',
-                    '부정적인 카드도 성장의 기회로 받아들이세요'
+                    '카드는 정해진 미래가 아니라, 생각해 볼 관점을 던져 줍니다',
+                    '마음에 와 닿는 말만 골라 적용해도 괜찮아요',
+                    '최종 선택과 행동은 항상 내가 합니다',
+                    '어렵게 느껴지는 카드도 새로운 시도를 떠올리게 하는 신호일 수 있어요'
                   ].map((tip, index) => (
                     <li
                       key={index}

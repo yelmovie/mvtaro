@@ -18,7 +18,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const content = language === 'ko' ? {
-    title: '개발자에게 문의',
+    title: '문의하기',
     subtitle: '의견을 들려주세요',
     types: {
       suggestion: {
@@ -38,11 +38,11 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     messagePlaceholder: '문의 내용을 자세히 작성해주세요...',
     sendButton: '전송하기',
     successTitle: '전송 완료!',
-    successMessage: '개발자에게 메일이 전송되었습니다.\n연락 메일이나 연락처를 남겨주시면 빠른 시일 내에 답변드리겠습니다.',
+    successMessage: '문의 메일을 보낼 준비가 되었어요.\n메일 앱이 열리면 내용을 확인한 뒤 전송해주세요.',
     backButton: '돌아가기',
     closeButton: '닫기'
   } : {
-    title: 'Contact Developer',
+    title: 'Contact Us',
     subtitle: 'Share your feedback',
     types: {
       suggestion: {
@@ -62,7 +62,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     messagePlaceholder: 'Please describe your inquiry in detail...',
     sendButton: 'Send',
     successTitle: 'Sent Successfully!',
-    successMessage: 'Your message has been sent to the developer.\nIf you provided your contact information, we will respond as soon as possible.',
+    successMessage: 'Your message is ready in your mail app.\nPlease review it and send it there.',
     backButton: 'Go Back',
     closeButton: 'Close'
   };
@@ -72,7 +72,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
     // 실제 이메일 전송 로직 (mailto 사용)
     const typeText = content.types[selectedType].title;
-    const subject = `[Arcana Compass] ${typeText}`;
+    const subject = `[마음코칭 카드] ${typeText}`;
     const body = `문의 유형: ${typeText}\n\n${message}\n\n---\n답변받을 이메일: ${userEmail || '없음'}`;
     const mailtoLink = `mailto:robell.comp@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     

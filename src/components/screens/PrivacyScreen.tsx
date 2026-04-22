@@ -18,67 +18,67 @@ export function PrivacyScreen({ onBack }: PrivacyScreenProps) {
       {
         icon: Database,
         title: '수집하는 정보',
-        description: 'Arcana Compass는 더 깊이 있는 타로 해석을 제공하기 위해 다음 정보를 수집합니다:',
+        description: '마음코칭 카드는 시연용 앱으로, 꼭 필요한 최소 정보만 다룹니다:',
         items: [
-          '생년월일 (선택사항)',
-          '성격 테스트 결과 (선택사항)',
-          '타로 리딩 질문 및 선택한 카드',
-          '프리미엄 회원의 경우 리딩 히스토리'
+          '사용자가 선택한 고민, 감정, 마음 한 줄',
+          '화면 표시를 위한 카드 결과 정보',
+          '기기 안에 저장되는 테마, 보기 모드, 언어 설정',
+          '문의하기에서 사용자가 직접 적은 이메일 주소와 문의 내용(메일 앱 사용 시)'
         ]
       },
       {
         icon: UserCheck,
         title: '정보 수집 방식',
-        description: '모든 개인정보는 사용자의 명시적 동의와 선택에 의해서만 수집됩니다:',
+        description: '앱은 사용자가 직접 선택하거나 입력한 정보만 사용합니다:',
         items: [
-          '회원가입 시 선택적으로 제공',
-          '프로필 설정에서 직접 입력',
-          '언제든지 정보 수정 및 삭제 가능',
-          '비회원은 기본 타로 리딩만 이용 가능'
+          '회원가입 없이 바로 사용할 수 있습니다',
+          '학생 이름, 생년월일, 연락처를 필수로 받지 않습니다',
+          '현재 시연 흐름의 결과 데이터는 주로 현재 화면에서만 사용됩니다',
+          '설정 화면에서 앱 저장 정보를 직접 지울 수 있습니다'
         ]
       },
       {
         icon: Eye,
         title: '정보 사용 목적',
-        description: '수집된 정보는 오직 다음 목적으로만 사용됩니다:',
+        description: '선택된 정보는 다음 목적에서만 사용됩니다:',
         items: [
-          '개인 맞춤형 타로 해석 생성',
-          'AI 기반 더 깊이 있는 조언 제공',
-          '프리미엄 회원의 리딩 히스토리 저장',
-          '서비스 개선 및 사용자 경험 향상'
+          '감정 인식, 관계 이해, 행동 선택 결과를 보여주기 위해',
+          '사용자가 이전과 비슷한 화면 환경으로 앱을 다시 보기 위해',
+          '문의 메일을 보낼 때 제목과 내용을 메일 앱으로 넘기기 위해',
+          '시연 안정성과 사용성 확인을 위해'
         ]
       },
       {
         icon: Lock,
         title: '정보 보호',
-        description: '귀하의 개인정보는 안전하게 보호됩니다:',
+        description: '민감한 정보를 최소화하고, 브라우저 저장 범위를 줄이는 방향으로 설계했습니다:',
         items: [
-          '암호화된 데이터베이스에 안전하게 저장',
-          '제3자에게 판매하거나 공유하지 않음',
-          '법적 요구가 있는 경우를 제외하고 외부 제공 없음',
-          '정기적인 보안 점검 및 업데이트'
+          '학생 개인정보를 필수로 저장하지 않습니다',
+          '설정 정보는 사용자 기기의 브라우저 저장소에만 남습니다',
+          '외부로 자동 전송되는 개인정보 수집 기능은 기본 흐름에 포함하지 않았습니다',
+          '불필요한 개발 로그와 레거시 문구는 제출 전 정리합니다'
         ]
       },
       {
         icon: AlertCircle,
         title: '책임의 제한',
-        description: '서비스 이용 시 다음 사항을 숙지해 주시기 바랍니다:',
+        description: '앱 이용 시 아래 내용을 함께 확인해 주세요:',
         items: [
-          '타로는 엔터테인먼트 목적의 도구이며 의학적/법적 조언을 대체할 수 없습니다',
-          '사용자가 선택적으로 제공한 정보에 대한 책임은 사용자 본인에게 있습니다',
-          '불가항력적 사이버 공격으로 인한 정보 유출에 대해서는 책임을 지지 않습니다',
-          '서비스는 "있는 그대로" 제공되며, 특정 목적에 대한 적합성을 보증하지 않습니다'
+          '이 앱은 친구관계 마음을 정리해보는 교육용 코칭 도구입니다',
+          '의학적, 법적, 전문 상담을 대신하지 않습니다',
+          '문의하기에 적는 내용은 사용자가 직접 확인한 뒤 메일 앱으로 전송됩니다',
+          '시연용 환경에서는 네트워크나 기기 상태에 따라 일부 화면이 달라질 수 있습니다'
         ]
       },
       {
         icon: Shield,
         title: '귀하의 권리',
-        description: '개인정보와 관련하여 다음 권리를 가집니다:',
+        description: '앱 사용자는 다음과 같은 선택 권한을 가집니다:',
         items: [
-          '언제든지 본인의 정보를 열람할 권리',
-          '정보의 수정 및 업데이트 요청 권리',
-          '정보의 삭제 및 회원 탈퇴 권리',
-          '정보 처리 중단 요청 권리'
+          '설정과 저장 정보를 언제든지 지울 수 있습니다',
+          '문의 메일 전송 전 내용을 직접 확인하고 취소할 수 있습니다',
+          '개인정보를 적지 않고도 대부분의 시연 기능을 사용할 수 있습니다',
+          '궁금한 점은 아래 메일로 문의할 수 있습니다'
         ]
       }
     ],
@@ -89,73 +89,73 @@ export function PrivacyScreen({ onBack }: PrivacyScreenProps) {
     }
   } : {
     title: 'Privacy Policy',
-    subtitle: 'Safe and transparent information management',
+    subtitle: 'Safe and transparent information handling',
     lastUpdated: 'Last Updated: February 21, 2026',
     sections: [
       {
         icon: Database,
         title: 'Information We Collect',
-        description: 'Arcana Compass collects the following information to provide deeper tarot interpretations:',
+        description: 'Mind Coaching Card uses only the minimum information needed for the demo flow:',
         items: [
-          'Date of birth (optional)',
-          'Personality test results (optional)',
-          'Tarot reading questions and selected cards',
-          'Reading history for premium members'
+          'Selected concern, emotion, and feeling sentence',
+          'Card result data shown on the current screen',
+          'Theme, language, and view mode saved in the browser',
+          'Email address and message only when the user chooses to send a contact email'
         ]
       },
       {
         icon: UserCheck,
         title: 'How We Collect Information',
-        description: 'All personal information is collected only with explicit user consent and choice:',
+        description: 'The app uses only information the user directly selects or enters:',
         items: [
-          'Optionally provided during registration',
-          'Directly entered in profile settings',
-          'Can be modified or deleted at any time',
-          'Non-members can only use basic tarot readings'
+          'No account is required to use the main coaching flow',
+          'Student name, birth date, and phone number are not required',
+          'Most result data is used only during the current session',
+          'Saved app data can be removed from the settings screen'
         ]
       },
       {
         icon: Eye,
         title: 'Purpose of Use',
-        description: 'Collected information is used only for the following purposes:',
+        description: 'Selected information is used only for these purposes:',
         items: [
-          'Generate personalized tarot interpretations',
-          'Provide AI-based deeper advice',
-          'Save reading history for premium members',
-          'Improve service and user experience'
+          'Show emotion understanding, relationship guidance, and action suggestions',
+          'Restore the user’s preferred theme, language, and view mode',
+          'Pass contact message details to the user’s mail app when requested',
+          'Support demo stability and usability checks'
         ]
       },
       {
         icon: Lock,
         title: 'Information Protection',
-        description: 'Your personal information is securely protected:',
+        description: 'The app is designed to minimize sensitive data and limit browser storage:',
         items: [
-          'Safely stored in encrypted databases',
-          'Not sold or shared with third parties',
-          'No external provision except for legal requirements',
-          'Regular security checks and updates'
+          'Student personal information is not required for the main demo',
+          'Saved settings stay in the local browser storage',
+          'The main flow does not automatically send personal data to external services',
+          'Debug logs and legacy strings are cleaned up before submission'
         ]
       },
       {
         icon: AlertCircle,
         title: 'Limitation of Liability',
-        description: 'Please be aware of the following when using the service:',
+        description: 'Please note the following when using the app:',
         items: [
-          'Tarot is an entertainment tool and cannot replace medical/legal advice',
-          'Users are responsible for information they choose to provide',
-          'We are not liable for information leaks due to force majeure cyber attacks',
-          'Service is provided "as is" without warranty of fitness for any particular purpose'
+          'This app is an educational coaching tool for organizing friendship-related feelings',
+          'It does not replace medical, legal, or professional counseling',
+          'Contact messages are reviewed by the user before opening the mail app',
+          'Some visual behavior may vary depending on device or browser conditions'
         ]
       },
       {
         icon: Shield,
         title: 'Your Rights',
-        description: 'You have the following rights regarding your personal information:',
+        description: 'Users have the following choices:',
         items: [
-          'Right to view your information at any time',
-          'Right to request correction and updates',
-          'Right to delete information and withdraw membership',
-          'Right to request suspension of information processing'
+          'You can remove saved app data at any time',
+          'You can review or cancel a contact email before sending it',
+          'You can use most demo features without entering personal information',
+          'You can contact us with questions using the email below'
         ]
       }
     ],
@@ -388,7 +388,7 @@ export function PrivacyScreen({ onBack }: PrivacyScreenProps) {
           color: 'var(--text-secondary)',
           fontSize: '0.9rem'
         }}>
-          <p>🔮 {language === 'ko' ? '안전하고 신뢰할 수 있는 타로 경험을 제공합니다' : 'We provide a safe and trustworthy tarot experience'} 🔮</p>
+          <p>🍀 {language === 'ko' ? '안심하고 사용할 수 있는 친구관계 마음코칭 경험을 지향합니다' : 'We aim to provide a safe and reassuring friendship coaching experience'} 🍀</p>
         </div>
       </div>
     </div>

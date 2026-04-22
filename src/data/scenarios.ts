@@ -1,8 +1,36 @@
+import type { EmotionIntensity } from './coaching-engine-v2-data';
+import type { CoachingInteractiveActionSetResolved } from './interactive-action-bundle';
+
 export interface CoachingScenario {
+  emotionInsight?: string;
+  friendPerspective?: string;
+  actionGuide?: string;
+  summary?: string;
+  safetyLine?: string;
+  actionSteps?: {
+    easy: string | string[];
+    medium: string | string[];
+    hard: string | string[];
+  };
+  todayAction?: string;
+  oneLineSummary?: string;
+  title?: string;
+  empathy?: string[];
+  explanation?: string[];
+  meaning?: string[];
+  closing?: string;
   emotionText: string;
   friendText: string;
   actions: string[];
   dialogues: string[];
+  cheer?: string;
+  smallAction?: string;
+  mindSummary?: string;
+  teacherTip?: string;
+  patternName?: string;
+  /** 행동 단계 인터랙티브 세트 + 말하기 연결 */
+  interactiveActionSet?: CoachingInteractiveActionSetResolved;
+  emotionIntensity?: EmotionIntensity;
 }
 
 export type ScenarioMap = {

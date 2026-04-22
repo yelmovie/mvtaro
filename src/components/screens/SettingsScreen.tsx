@@ -16,6 +16,7 @@ export function SettingsScreen({ onBack, onNavigateToHelp, onNavigateToPrivacy }
   const { language, setLanguage } = useLanguage();
   const t = getTranslations(language);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const APP_STORAGE_KEYS = ['theme', 'app-language', 'mind-coaching-view-mode', 'tarot-reading-history', 'tarot-settings'];
   
   const [settings, setSettings] = useState(() => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -403,7 +404,7 @@ export function SettingsScreen({ onBack, onNavigateToHelp, onNavigateToPrivacy }
                 }}
                 onClick={() => {
                   if (confirm(t.deleteConfirm)) {
-                    localStorage.clear();
+                    APP_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
                     alert(t.dataDeleted);
                     window.location.reload();
                   }

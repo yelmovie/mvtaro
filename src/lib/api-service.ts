@@ -18,8 +18,7 @@ export async function generateAIReading(cardIds: string[], question: string, use
 export async function sendResultEmail(email: string, results: any) {
   // Mock email sending
   await new Promise(resolve => setTimeout(resolve, 500));
-  
-  console.log('Sending email to:', email, results);
+
   return { success: true, message: '이메일이 전송되었습니다.' };
 }
 

@@ -602,9 +602,9 @@
 }
 
 [data-theme="light"] {
-  --bg-gradient: linear-gradient(180deg, #f0e6ff 0%, #e8d5ff 50%, #f0e6ff 100%);
-  --bg-dark: #f0e6ff;
-  --bg-mid: #e8d5ff;
+  --bg-gradient: linear-gradient(180deg, #fafafa 0%, #f4f4f6 50%, #fafafa 100%);
+  --bg-dark: #fafafa;
+  --bg-mid: #f4f4f6;
   --surface-glass: #6b46c114;
   --surface-glass-hover: #6b46c126;
   --surface-border: #6b46c133;

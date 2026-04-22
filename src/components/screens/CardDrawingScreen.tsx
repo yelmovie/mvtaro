@@ -1,20 +1,23 @@
 import { ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { getAllCardIds } from '../../data/tarot-cards';
+import { drawRecommendedCards } from '../../hooks/useCardLogic';
+import { DrawnCard } from '../../types/app-types';
 import cardBackImg from 'figma:asset/ebbb072acc67baec62346e995df8d7e6c58b0f3a.png';
 import beginButtonImg from 'figma:asset/88750f26f150628ebb5988a25a59a53e93957ab3.png';
 import backgroundImg from 'figma:asset/88caa78ab1187604e765043cdea4cdaa77aaba83.png';
 
 interface CardDrawingScreenProps {
+  problemType: string;
+  emotionLabel: string;
   questionTitle: string;
   onBack: () => void;
-  onCardsDrawn: (cardIds: string[]) => void;
+  onCardsDrawn: (cards: DrawnCard[]) => void;
 }
 
 type AnimationPhase = 'preparation' | 'breathing' | 'ready' | 'spinning' | 'spreading' | 'flipping';
 
-export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardDrawingScreenProps) {
+export function CardDrawingScreen({ problemType, emotionLabel, questionTitle, onBack, onCardsDrawn }: CardDrawingScreenProps) {
   const [animationPhase, setAnimationPhase] = useState<AnimationPhase>('preparation');
   const [focusProgress, setFocusProgress] = useState(0);
 
@@ -29,7 +32,6 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
         if (progress >= 100) {
           clearInterval(interval);
           setTimeout(() => {
-            console.log('Transitioning to READY phase...');
             setAnimationPhase('ready');
           }, 500);
         }
@@ -39,18 +41,11 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
     }
   }, [animationPhase]);
 
-  // Debug: Log phase changes
-  useEffect(() => {
-    console.log('Animation Phase Changed:', animationPhase);
-  }, [animationPhase]);
-
   const handleStartPreparation = () => {
     setAnimationPhase('breathing');
   };
 
   const handleBegin = () => {
-    console.log('BEGIN button clicked! Starting card animation...');
-    
     // Phase 1: Spinning (1.5s)
     setAnimationPhase('spinning');
     
@@ -64,11 +59,7 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
         
         setTimeout(() => {
           // Phase 4: Navigate to result
-          const allCardIds = getAllCardIds();
-          const shuffled = [...allCardIds].sort(() => Math.random() - 0.5);
-          const selectedCards = shuffled.slice(0, 3);
-          
-          console.log('Cards drawn:', selectedCards);
+          const selectedCards = drawRecommendedCards(problemType, emotionLabel);
           onCardsDrawn(selectedCards);
         }, 1200);
       }, 1000);
@@ -173,7 +164,7 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}>
-                카드와 교감할 준비를 해주세요
+                마음을 차분히 돌아볼 준비를 해주세요
               </h2>
 
               <p style={{
@@ -182,8 +173,8 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
                 marginBottom: '2rem',
                 lineHeight: 1.8
               }}>
-                마음을 차분하게 가라앉히고 오직 당신의<br />
-                진짜 감정에 집중해보세요.
+                마음을 차분하게 가라앉히고 지금 느끼는<br />
+                솔직한 감정에 집중해보세요.
               </p>
 
               <div style={{
@@ -452,7 +443,7 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
                   WebkitTextFillColor: 'transparent'
                 }}
               >
-                준비가 완료되었습니다
+                마음을 살펴볼 준비가 되었어요
               </motion.h3>
 
               <p style={{
@@ -461,8 +452,9 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
                 marginBottom: '0',
                 lineHeight: 1.8
               }}>
-                내 마음을 돌아볼 준비가 되었어요.<br />
-                카드를 클릭하여 카드가 전하는 공감 메시지를 확인하세요.
+                눈을 감고 마음이 가는 카드를 골라보세요.
+                <br />
+                준비가 되면 아래를 눌러 카드를 펼쳐보세요.
               </p>
             </motion.div>
 
@@ -500,7 +492,7 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
               >
                 <img 
                   src={beginButtonImg}
-                  alt="Begin"
+                  alt="카드 뽑기 시작"
                   style={{
                     width: '100%',
                     height: '100%',
@@ -676,7 +668,7 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
               width: '800px',
               justifyContent: 'center'
             }}>
-              {['내 마음', '보이지 않던 진심', '내가 할 수 있는 일'].map((label, index) => (
+              {['나의 마음', '친구 쪽 생각', '해볼 방향'].map((label, index) => (
                 <motion.div
                   key={label}
                   initial={{ opacity: 0, y: -10 }}
@@ -688,7 +680,8 @@ export function CardDrawingScreen({ questionTitle, onBack, onCardsDrawn }: CardD
                     color: index === 1 ? 'var(--primary-gold)' : 'var(--text-secondary)',
                     textAlign: 'center',
                     textShadow: '0 0 10px rgba(0, 0, 0, 0.8)',
-                    width: '180px'
+                    width: '180px',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   {label}

@@ -1,24 +1,38 @@
 import { motion } from 'motion/react';
-import React from 'react';
-
-// @ts-ignore
-import cardImg1 from '../../assets/card1.png';
-// @ts-ignore
-import cardImg2 from '../../assets/card2.png';
-// @ts-ignore
-import cardImg3 from '../../assets/card3.png';
+import React, { useEffect, useState } from 'react';
+import { getCardImage } from '../../data/tarot-card-images';
 
 interface CardItemProps {
   index: number;
   label: string;
   subtitle: string;
+  cardId: string;
   cardName: string;
+  isReversed: boolean;
   color: string;
   isLoaded: boolean;
   delay?: number;
 }
 
-export function CardItem({ index, label, subtitle, cardName, color, isLoaded, delay = 0 }: CardItemProps) {
+export function CardItem({
+  index,
+  label,
+  subtitle,
+  cardId,
+  cardName,
+  isReversed,
+  color,
+  isLoaded,
+  delay = 0
+}: CardItemProps) {
+  const cardImage = getCardImage(cardId);
+  const [hasImageError, setHasImageError] = useState(false);
+  const showFallback = !cardImage || hasImageError;
+
+  useEffect(() => {
+    setHasImageError(false);
+  }, [cardId, cardImage]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -93,27 +107,31 @@ export function CardItem({ index, label, subtitle, cardName, color, isLoaded, de
           </div>
         ) : (
           <>
-            <img 
-              src={index === 0 ? cardImg1 : index === 1 ? cardImg2 : cardImg3}
-              alt={label}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                position: 'absolute',
-                inset: 0,
-                zIndex: 0,
-                opacity: 0.9
-              }}
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-                e.currentTarget.parentElement!.classList.add('fallback-icon');
-              }}
-            />
+            {!showFallback && (
+              <img 
+                src={cardImage}
+                alt={label}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  opacity: 0.9,
+                  transform: isReversed ? 'rotate(180deg)' : 'none'
+                }}
+                onError={() => {
+                  setHasImageError(true);
+                }}
+              />
+            )}
             <div style={{
               position: 'absolute',
               inset: 0,
-              background: 'linear-gradient(to top, rgba(15,23,42,0.8) 0%, transparent 60%)',
+              background: showFallback
+                ? `linear-gradient(180deg, ${color}33 0%, rgba(15,23,42,0.94) 100%)`
+                : 'linear-gradient(to top, rgba(15,23,42,0.8) 0%, transparent 60%)',
               zIndex: 1
             }} />
             <div style={{
@@ -124,13 +142,46 @@ export function CardItem({ index, label, subtitle, cardName, color, isLoaded, de
               alignItems: 'center',
               justifyContent: 'flex-end',
               height: '100%',
-              paddingBottom: '1rem'
+              padding: showFallback ? '1.2rem' : '0 0 1rem'
             }}>
+              {showFallback && (
+                <div style={{
+                  marginTop: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '0.6rem',
+                  textAlign: 'center'
+                }}>
+                  <span style={{ fontSize: '2.4rem' }}>🃏</span>
+                  <p style={{
+                    margin: 0,
+                    color: 'rgba(255,255,255,0.82)',
+                    fontSize: '0.86rem',
+                    lineHeight: 1.5
+                  }}>
+                    카드 이미지를 불러오지 못해도
+                    <br />
+                    코칭 내용은 그대로 확인할 수 있어요.
+                  </p>
+                </div>
+              )}
               <h3 style={{ 
                 fontWeight: 700, 
                 color: '#fff',
                 textShadow: '0 2px 10px rgba(0,0,0,0.8)'
               }}>{cardName}</h3>
+              <span style={{
+                marginTop: '0.35rem',
+                fontSize: '0.75rem',
+                color: 'rgba(255,255,255,0.9)',
+                background: 'rgba(15, 23, 42, 0.58)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                borderRadius: '9999px',
+                padding: '0.2rem 0.55rem'
+              }}>
+                {isReversed ? '이 카드는 뒤집혀 나왔어요' : '이 카드는 정방향으로 나왔어요'}
+              </span>
             </div>
           </>
         )}

@@ -16,6 +16,12 @@ export interface ReadingHistory {
   results: any;
 }
 
+export interface DrawnCard {
+  id: string;
+  isReversed: boolean;
+  toneSeed: number;
+}
+
 export interface CompatibilityData {
   user1: UserProfile;
   user2: UserProfile;

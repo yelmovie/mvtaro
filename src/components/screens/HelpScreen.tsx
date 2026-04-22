@@ -1,4 +1,4 @@
-import { ArrowLeft, Heart, Star, BookOpen } from 'lucide-react';
+import { ArrowLeft, Heart, Star, BookOpen, Sparkles } from 'lucide-react';
 import { MysticBackground } from '../MysticBackground';
 import { motion } from 'motion/react';
 import { useLanguage } from '../../lib/LanguageContext';
@@ -12,91 +12,91 @@ export function HelpScreen({ onBack }: HelpScreenProps) {
 
   const content = language === 'ko' ? {
     title: '도움말',
-    subtitle: '타로 여정을 시작하는 방법',
+    subtitle: '친구관계 마음코칭 카드를 사용하는 방법',
     sections: [
       {
         icon: Sparkles,
-        title: '타로 리딩 시작하기',
+        title: '시작하는 순서',
         items: [
-          '홈 화면에서 수정구슬을 클릭하거나 고민 카테고리를 선택하세요',
-          '마음 속 질문을 떠올리며 카드를 선택하세요',
-          '3장의 카드가 과거-현재-미래를 보여줍니다',
-          '각 카드의 의미를 읽고 긍정적인 조언을 받으세요'
+          '홈 화면에서 지금 가장 가까운 고민을 하나 고르세요',
+          '내 감정과 마음 한 줄을 고르면 카드 뽑기 화면으로 이어집니다',
+          '카드 3장은 내 마음, 친구의 입장, 내가 해볼 행동을 순서대로 보여줍니다',
+          '결과를 읽으며 작은 행동 하나와 오늘 마음 한 줄을 정리해보세요'
         ]
       },
       {
         icon: Heart,
-        title: '프리미엄 회원 혜택',
+        title: '이 앱이 도와주는 것',
         items: [
-          '더욱 구체적이고 깊이 있는 타로 해석',
-          '개인 맞춤형 조언 및 실용적인 가이드',
-          '리딩 기록 저장 및 히스토리 확인',
-          '광고 없는 깨끗한 경험'
+          '내 감정을 먼저 알아차리도록 도와줍니다',
+          '친구의 입장을 너무 무겁지 않게 상상해보게 합니다',
+          '바로 해볼 수 있는 작은 행동을 제안합니다',
+          '마지막에 내 마음을 한 문장으로 정리하게 돕습니다'
         ]
       },
       {
         icon: Star,
-        title: '타로 리딩 팁',
+        title: '더 잘 활용하는 팁',
         items: [
-          '조용하고 편안한 마음으로 시작하세요',
-          '구체적인 질문을 떠올리면 더 명확한 답을 얻습니다',
-          '타로는 긍정적인 방향을 제시하는 도구입니다',
-          '열린 마음으로 메시지를 받아들이세요'
+          '조용한 곳에서 지금 가장 걸리는 마음을 먼저 떠올려보세요',
+          '정답을 찾으려 하기보다 내 마음을 정리한다는 느낌으로 읽어보세요',
+          '말하기 어렵다면 오늘은 작은 행동 하나만 골라도 충분합니다',
+          '친구를 탓하기보다 내 마음을 부드럽게 표현하는 방향으로 읽어보세요'
         ]
       },
       {
         icon: BookOpen,
         title: '자주 묻는 질문',
         items: [
-          'Q: 하루에 몇 번 리딩할 수 있나요?\nA: 제한 없이 원하는 만큼 리딩하실 수 있습니다.',
-          'Q: 같은 질문을 다시 물어봐도 되나요?\nA: 네, 시간이 지나면 상황이 변하므로 다시 물어보세요.',
-          'Q: 타로 카드는 미래를 정확히 예측하나요?\nA: 타로는 현재 상황과 가능성을 보여주는 도구입니다.',
-          'Q: 프리미엄은 어떻게 가입하나요?\nA: 설정 화면에서 프리미엄 구독을 선택하세요.'
+          'Q: 하루에 몇 번 해도 되나요?\nA: 필요할 때마다 다시 해보셔도 괜찮습니다.',
+          'Q: 같은 고민으로 다시 해도 되나요?\nA: 네, 마음이 달라졌는지 다시 확인해볼 수 있습니다.',
+          'Q: 카드가 미래를 맞혀주나요?\nA: 이 앱은 미래 예측보다 감정 정리와 관계 회복 방향에 초점을 둡니다.',
+          'Q: 바로 말하기 어렵다면 어떻게 하나요?\nA: 오늘은 작은 행동이나 한 줄 정리만 해도 충분합니다.'
         ]
       }
     ]
   } : {
     title: 'Help Guide',
-    subtitle: 'How to start your tarot journey',
+    subtitle: 'How to use the friendship coaching cards',
     sections: [
       {
         icon: Sparkles,
-        title: 'Start Tarot Reading',
+        title: 'Getting Started',
         items: [
-          'Click the crystal ball or select a concern category on the home screen',
-          'Choose cards while thinking of your question',
-          '3 cards will show your past-present-future',
-          'Read the meaning of each card and receive positive guidance'
+          'Choose the friendship concern that feels closest to your current situation',
+          'Select your emotion and the feeling sentence that matches you most',
+          'The three cards guide you through your feelings, your friend’s perspective, and a possible action',
+          'Use the final step to choose one small action and summarize your mind in one line'
         ]
       },
       {
         icon: Heart,
-        title: 'Premium Member Benefits',
+        title: 'What This App Helps With',
         items: [
-          'More specific and in-depth tarot interpretations',
-          'Personalized advice and practical guidance',
-          'Save reading history and check past readings',
-          'Ad-free clean experience'
+          'Recognizing your own feelings first',
+          'Thinking about your friend’s point of view gently',
+          'Choosing one small action you can try today',
+          'Finishing with a short self-reflection line'
         ]
       },
       {
         icon: Star,
-        title: 'Tarot Reading Tips',
+        title: 'Helpful Tips',
         items: [
-          'Start with a quiet and comfortable mind',
-          'Specific questions lead to clearer answers',
-          'Tarot is a tool that suggests positive directions',
-          'Accept messages with an open mind'
+          'Start in a calm place and focus on the feeling that is bothering you most',
+          'Read the cards as coaching hints, not as fixed answers',
+          'If speaking feels hard, choosing one small action is enough for today',
+          'Try to read the result as a gentle way to express your feelings'
         ]
       },
       {
         icon: BookOpen,
         title: 'FAQ',
         items: [
-          'Q: How many readings can I do per day?\nA: You can do unlimited readings.',
-          'Q: Can I ask the same question again?\nA: Yes, situations change over time so feel free to ask again.',
-          'Q: Do tarot cards predict the future accurately?\nA: Tarot shows current situations and possibilities.',
-          'Q: How do I subscribe to Premium?\nA: Select Premium subscription in the settings screen.'
+          'Q: How many times can I use it in one day?\nA: You can repeat it whenever you need to check your feelings again.',
+          'Q: Can I revisit the same concern?\nA: Yes. It can help you see whether your feelings have changed.',
+          'Q: Does it predict the future?\nA: No. It is designed as an educational coaching tool for feelings and relationships.',
+          'Q: What if I am not ready to say anything today?\nA: It is okay to stop after choosing one small action or one summary line.'
         ]
       }
     ]
@@ -267,7 +267,7 @@ export function HelpScreen({ onBack }: HelpScreenProps) {
           color: 'var(--text-secondary)',
           fontSize: '0.9rem'
         }}>
-          <p>✨ {language === 'ko' ? '타로의 신비로운 여정이 당신을 기다립니다' : 'A mystical tarot journey awaits you'} ✨</p>
+          <p>✨ {language === 'ko' ? '천천히 읽고, 오늘 할 수 있는 한 걸음만 골라도 괜찮아요' : 'Take your time and choose just one small step for today'} ✨</p>
         </div>
       </div>
     </div>

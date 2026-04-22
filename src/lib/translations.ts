@@ -179,10 +179,10 @@ export const translations: Record<Language, Translations> = {
     skip: '건너뛰기',
     
     // Home Screen
-    appTitle: 'Arcana Compass',
-    appSubtitle: '신비로운 타로로 미래를 엿보세요',
-    startReading: '타로 시작하기',
-    dailyFortune: '오늘의 운세',
+    appTitle: '마음코칭 카드',
+    appSubtitle: '카드로 내 마음을 천천히 정리해보세요',
+    startReading: '마음코칭 시작하기',
+    dailyFortune: '오늘의 마음',
     compatibility: '궁합 보기',
     features: '기능',
     myProfile: '내 프로필',
@@ -202,13 +202,13 @@ export const translations: Record<Language, Translations> = {
     
     // Card Drawing
     breatheTitle: '깊게 호흡하며 집중하세요',
-    breatheDesc: '당신의 고민거리를 떠올리며 깊게 호흡하세요.',
+    breatheDesc: '친구관계 고민을 떠올리며 천천히 호흡하세요.',
     selectCards: '카드를 선택하세요',
     selectCardsDesc: '직관에 따라 3장의 카드를 선택하세요',
-    selectCardInstruction: '마음이 끌리는 카드를 선택하세요',
+    selectCardInstruction: '눈을 감고 마음이 가는 카드를 골라보세요',
     
     // Result Screen
-    readingResult: '타로 리딩 결과',
+    readingResult: '마음코칭 결과',
     past: '과거',
     present: '현재',
     future: '미래',
@@ -239,7 +239,7 @@ export const translations: Record<Language, Translations> = {
     korean: '한국어',
     english: 'English',
     autoSave: '자동 저장',
-    autoSaveDesc: '타로 리딩 결과 자동 저장',
+    autoSaveDesc: '앱 설정을 기기에 저장해 다음에도 같은 환경으로 보여줍니다',
     
     // About & Support
     aboutSupport: '정보 & 지원',
@@ -251,7 +251,7 @@ export const translations: Record<Language, Translations> = {
     developer: '개발자',
     developerName: 'Figma Make',
     developerEmail: 'robell.comp@gmail.com',
-    contactDeveloper: '개발자에게 문의',
+    contactDeveloper: '문의하기',
     send: '전송',
     sendFeedback: '제안하기',
     reportBug: '오류 문의',
@@ -347,10 +347,10 @@ export const translations: Record<Language, Translations> = {
     skip: 'Skip',
     
     // Home Screen
-    appTitle: 'Arcana Compass',
-    appSubtitle: 'Explore your future with mystical tarot',
-    startReading: 'Start Reading',
-    dailyFortune: 'Daily Fortune',
+    appTitle: 'Mind Coaching Card',
+    appSubtitle: 'Take time to organize your feelings with the cards',
+    startReading: 'Start Coaching',
+    dailyFortune: 'Today\'s Reflection',
     compatibility: 'Compatibility',
     features: 'Features',
     myProfile: 'My Profile',
@@ -370,13 +370,13 @@ export const translations: Record<Language, Translations> = {
     
     // Card Drawing
     breatheTitle: 'Take a Deep Breath and Focus',
-    breatheDesc: 'Think about your concern and breathe deeply.',
+    breatheDesc: 'Think about your friendship concern and breathe slowly.',
     selectCards: 'Select Your Cards',
     selectCardsDesc: 'Choose 3 cards following your intuition',
     selectCardInstruction: 'Select cards that call to you',
     
     // Result Screen
-    readingResult: 'Tarot Reading Result',
+    readingResult: 'Coaching Result',
     past: 'Past',
     present: 'Present',
     future: 'Future',
@@ -407,7 +407,7 @@ export const translations: Record<Language, Translations> = {
     korean: '한국어',
     english: 'English',
     autoSave: 'Auto Save',
-    autoSaveDesc: 'Automatically save tarot readings',
+    autoSaveDesc: 'Keep app preferences in this device for the next visit',
     
     // About & Support
     aboutSupport: 'About & Support',
@@ -419,7 +419,7 @@ export const translations: Record<Language, Translations> = {
     developer: 'Developer',
     developerName: 'Figma Make',
     developerEmail: 'robell.comp@gmail.com',
-    contactDeveloper: 'Contact Developer',
+    contactDeveloper: 'Contact Us',
     send: 'Send',
     sendFeedback: 'Send Feedback',
     reportBug: 'Report Bug',

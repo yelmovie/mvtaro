@@ -31,7 +31,7 @@ export function HomePage({ onStart }: HomePageProps) {
             color: 'var(--tarot-text)',
             letterSpacing: '-0.025em'
           }}>
-            우정 타로
+            마음코칭 카드
           </h1>
           
           <p style={{
@@ -40,8 +40,8 @@ export function HomePage({ onStart }: HomePageProps) {
             lineHeight: 'var(--line-height-relaxed)',
             opacity: 0.8
           }}>
-            친구관계의 흐름을 읽고<br />
-            긍정적인 방향을 찾아보세요
+            카드로 내 마음을 천천히 들여다보며<br />
+            친구관계의 힌트를 찾아보세요
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export function HomePage({ onStart }: HomePageProps) {
             }}
             className="hover:scale-105"
           >
-            오늘의 리딩 시작하기
+            마음코칭 시작하기
           </Button>
           
           <p style={{
@@ -72,7 +72,7 @@ export function HomePage({ onStart }: HomePageProps) {
             opacity: 0.6,
             color: 'var(--tarot-text-muted)'
           }}>
-            3장의 카드로 과거, 현재, 미래를 읽어드립니다
+            3장의 카드로 내 마음과 관계를 차분히 살펴봐요
           </p>
         </div>
 
